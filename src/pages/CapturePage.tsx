@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 import { useUser } from '@/contexts/UserContext';
-import { Video, Shield, Clock } from 'lucide-react';
+import { Video, Shield, Clock, CheckCircle } from 'lucide-react';
 
 const CapturePage = () => {
   const navigate = useNavigate();
@@ -17,6 +17,15 @@ const CapturePage = () => {
     email: '',
     whatsapp: ''
   });
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  const handleAuthorization = () => {
+    setIsAuthorized(true);
+    toast({
+      title: "Acesso Autorizado",
+      description: "Agora você pode preencher seus dados para continuar",
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +51,7 @@ const CapturePage = () => {
 
     toast({
       title: "Bem-vindo",
-      description: "Acesso liberado"
+      description: "Acesso liberado com sucesso!"
     });
 
     navigate('/videos');
@@ -73,104 +82,137 @@ const CapturePage = () => {
               Tenha acesso a um conteúdo <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent font-medium">exclusivo</span> de vídeos
             </h1>
             
-            {/* Modern benefits grid */}
-            <div className="grid md:grid-cols-3 gap-8 mb-16">
-              <div className="group">
-                <div className="bg-gradient-to-br from-cyan-500/10 to-blue-600/10 backdrop-blur-sm border border-cyan-500/20 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:border-cyan-400/40">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="p-3 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl shadow-lg">
-                      <Video className="w-6 h-6 text-white" />
+            {/* Authorization Button */}
+            {!isAuthorized && (
+              <div className="mb-12">
+                <Card className="bg-gradient-to-br from-green-500/10 to-emerald-600/10 backdrop-blur-sm border border-green-500/30 shadow-2xl max-w-md mx-auto">
+                  <CardContent className="p-8 text-center">
+                    <Shield className="w-16 h-16 text-green-400 mx-auto mb-6" />
+                    <h3 className="text-2xl font-light text-white mb-4">
+                      Autorização de Acesso
+                    </h3>
+                    <p className="text-slate-300 mb-6">
+                      Clique para autorizar seu acesso ao conteúdo exclusivo
+                    </p>
+                    <Button 
+                      onClick={handleAuthorization}
+                      className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 border-0 text-white font-medium h-14 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
+                      <CheckCircle className="w-5 h-5 mr-2" />
+                      AUTORIZAR ACESSO
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {/* Benefits grid - shown after authorization */}
+            {isAuthorized && (
+              <div className="grid md:grid-cols-3 gap-8 mb-16">
+                <div className="group">
+                  <div className="bg-gradient-to-br from-cyan-500/10 to-blue-600/10 backdrop-blur-sm border border-cyan-500/20 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:border-cyan-400/40">
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="p-3 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl shadow-lg">
+                        <Video className="w-6 h-6 text-white" />
+                      </div>
                     </div>
+                    <h3 className="text-lg font-medium text-white mb-2">Vídeos Exclusivos</h3>
+                    <p className="text-slate-400 text-sm">Acesso completo à biblioteca de conteúdos</p>
                   </div>
-                  <h3 className="text-lg font-medium text-white mb-2">Vídeos Exclusivos</h3>
-                  <p className="text-slate-400 text-sm">Acesso completo à biblioteca de conteúdos</p>
+                </div>
+                
+                <div className="group">
+                  <div className="bg-gradient-to-br from-indigo-500/10 to-purple-600/10 backdrop-blur-sm border border-indigo-500/20 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:border-indigo-400/40">
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
+                        <Shield className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    <h3 className="text-lg font-medium text-white mb-2">Conteúdo Premium</h3>
+                    <p className="text-slate-400 text-sm">Material de alta qualidade e curado</p>
+                  </div>
+                </div>
+                
+                <div className="group">
+                  <div className="bg-gradient-to-br from-emerald-500/10 to-teal-600/10 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:border-emerald-400/40">
+                    <div className="flex items-center justify-center mb-4">
+                      <div className="p-3 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl shadow-lg">
+                        <Clock className="w-6 h-6 text-white" />
+                      </div>
+                    </div>
+                    <h3 className="text-lg font-medium text-white mb-2">Acesso Imediato</h3>
+                    <p className="text-slate-400 text-sm">Liberação instantânea após cadastro</p>
+                  </div>
                 </div>
               </div>
-              
-              <div className="group">
-                <div className="bg-gradient-to-br from-indigo-500/10 to-purple-600/10 backdrop-blur-sm border border-indigo-500/20 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:border-indigo-400/40">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg">
-                      <Shield className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-medium text-white mb-2">Conteúdo Premium</h3>
-                  <p className="text-slate-400 text-sm">Material de alta qualidade e curado</p>
-                </div>
-              </div>
-              
-              <div className="group">
-                <div className="bg-gradient-to-br from-emerald-500/10 to-teal-600/10 backdrop-blur-sm border border-emerald-500/20 rounded-2xl p-6 transition-all duration-300 hover:scale-105 hover:border-emerald-400/40">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="p-3 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl shadow-lg">
-                      <Clock className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                  <h3 className="text-lg font-medium text-white mb-2">Acesso Imediato</h3>
-                  <p className="text-slate-400 text-sm">Liberação instantânea após cadastro</p>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
-        <div className="max-w-lg mx-auto">
-          <Card className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl">
-            <CardHeader className="text-center pb-6">
-              <CardTitle className="text-2xl font-light text-white">
-                Libere seu acesso
-              </CardTitle>
-              <p className="text-slate-400 text-sm">
-                Preencha os dados abaixo para começar
-              </p>
-            </CardHeader>
-            <CardContent className="p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label className="text-slate-300 font-light text-sm">Nome Completo</Label>
-                  <Input
-                    placeholder="Digite seu nome completo"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="bg-white/5 border-white/20 text-white placeholder:text-slate-400 h-12 focus:border-cyan-400 transition-colors"
-                  />
+        {/* Form - only shown after authorization */}
+        {isAuthorized && (
+          <div className="max-w-lg mx-auto">
+            <Card className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl">
+              <CardHeader className="text-center pb-6">
+                <div className="flex items-center justify-center mb-4">
+                  <CheckCircle className="w-8 h-8 text-green-400 mr-2" />
+                  <span className="text-green-400 font-medium">ACESSO AUTORIZADO</span>
                 </div>
-
-                <div className="space-y-2">
-                  <Label className="text-slate-300 font-light text-sm">E-mail</Label>
-                  <Input
-                    type="email"
-                    placeholder="Digite seu melhor e-mail"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="bg-white/5 border-white/20 text-white placeholder:text-slate-400 h-12 focus:border-cyan-400 transition-colors"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-slate-300 font-light text-sm">WhatsApp</Label>
-                  <Input
-                    placeholder="(11) 99999-9999"
-                    value={formData.whatsapp}
-                    onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-                    className="bg-white/5 border-white/20 text-white placeholder:text-slate-400 h-12 focus:border-cyan-400 transition-colors"
-                  />
-                </div>
-
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 border-0 text-white font-medium h-14 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  Acessar Agora
-                </Button>
-                
-                <p className="text-xs text-slate-500 text-center">
-                  Seus dados estão protegidos e não serão compartilhados
+                <CardTitle className="text-2xl font-light text-white">
+                  Complete seu cadastro
+                </CardTitle>
+                <p className="text-slate-400 text-sm">
+                  Preencha os dados abaixo para finalizar
                 </p>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
+              </CardHeader>
+              <CardContent className="p-8">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label className="text-slate-300 font-light text-sm">Nome Completo</Label>
+                    <Input
+                      placeholder="Digite seu nome completo"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="bg-white/5 border-white/20 text-white placeholder:text-slate-400 h-12 focus:border-cyan-400 transition-colors"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-slate-300 font-light text-sm">E-mail</Label>
+                    <Input
+                      type="email"
+                      placeholder="Digite seu melhor e-mail"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="bg-white/5 border-white/20 text-white placeholder:text-slate-400 h-12 focus:border-cyan-400 transition-colors"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-slate-300 font-light text-sm">WhatsApp</Label>
+                    <Input
+                      placeholder="(11) 99999-9999"
+                      value={formData.whatsapp}
+                      onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
+                      className="bg-white/5 border-white/20 text-white placeholder:text-slate-400 h-12 focus:border-cyan-400 transition-colors"
+                    />
+                  </div>
+
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 border-0 text-white font-medium h-14 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    Finalizar Cadastro
+                  </Button>
+                  
+                  <p className="text-xs text-slate-500 text-center">
+                    Seus dados estão protegidos e não serão compartilhados
+                  </p>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );
